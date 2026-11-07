@@ -1,0 +1,22 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment and Secrets
+.env*
+*.key
+*.pem
+*.cert
+
+# Development & Scratch Artifacts
+node_modules/
+.netlify/
+scratch/
+*.log
+
+# Editor & Agent temporary artifacts
+.vscode/
+.idea/
+*.swp
+*.bak
