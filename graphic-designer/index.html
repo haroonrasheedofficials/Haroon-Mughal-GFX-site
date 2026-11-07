@@ -990,21 +990,32 @@ lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - 
 <div class="ck" id="ck" role="region" aria-label="Analytics choice" hidden><p>May I count your visit with Google Analytics? It sets cookies. <a href="../legal/index.html">Details</a></p><div><button type="button" data-ck="no">No thanks</button><button type="button" data-ck="yes">Allow</button></div></div>
 <script>
 (() => {
-  const ID = 'G-12PNLHKGHK', K = 'haroon-analytics';
-  let v = null; try { v = localStorage.getItem(K); } catch (e) {}
-  const load = () => {
+  const K = 'haroon-analytics';
+  let consentFired = false;
+  const grantConsent = () => {
+    if (consentFired) return;
+    consentFired = true;
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){ dataLayer.push(arguments); };
-    gtag('js', new Date()); gtag('config', ID);
-    const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID; document.head.appendChild(s);
+    window.dataLayer.push({
+      event: 'analytics_consent_given'
+    });
   };
-  if (v === 'yes') return load();
+
+  let v = null;
+  try { v = localStorage.getItem(K) || localStorage.getItem('rishi-analytics'); } catch (e) {}
+
+  if (v === 'yes') return grantConsent();
   if (v === 'no') return;
-  const b = document.getElementById('ck'); b.hidden = false;
-  b.addEventListener('click', e => {
-    const c = e.target.closest('[data-ck]'); if (!c) return;
+
+  const b = document.getElementById('ck');
+  if (b) b.hidden = false;
+
+  b?.addEventListener('click', e => {
+    const c = e.target.closest('[data-ck]');
+    if (!c) return;
     try { localStorage.setItem(K, c.dataset.ck); } catch (e) {}
-    b.hidden = true; if (c.dataset.ck === 'yes') load();
+    b.hidden = true;
+    if (c.dataset.ck === 'yes') grantConsent();
   });
 })();
 </script>
