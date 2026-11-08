@@ -640,6 +640,7 @@ function restart(o){
 }
 function checkHidden(){
   screens.forEach((o, i) => {
+    if (!o || !o.scr) return;
     const r = o.scr.getBoundingClientRect();
     let hidden = r.bottom <= 0 || r.top >= innerHeight;
     if (!hidden) for (let k = i + 1; k < cards.length; k++){ const n = cards[k].getBoundingClientRect(); if (n.top <= r.top + 1 && n.bottom >= r.bottom - 1){ hidden = true; break; } }
